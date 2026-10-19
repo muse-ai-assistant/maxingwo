@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#b71c1c">
+<title>骂醒我</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#1a0e0e;color:#ffe9a8;font-family:"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px;user-select:none}
+.warn{width:100%;max-width:560px;background:#ffcf3f;color:#b71c1c;border:4px solid #b71c1c;border-radius:10px;text-align:center;padding:10px;font-weight:900;font-size:1.05rem;letter-spacing:.15em;margin-bottom:18px}
+h1{font-size:2.6rem;font-weight:900;color:#ff5252;letter-spacing:.2em;margin-bottom:4px;text-shadow:0 0 24px rgba(255,82,82,.4)}
+.sub{color:#a08a6a;font-size:.85rem;margin-bottom:18px;letter-spacing:.1em}
+.tabs{display:flex;gap:10px;margin-bottom:20px;width:100%;max-width:560px}
+.tab{flex:1;padding:12px 4px;background:#2a1414;border:2px solid #5a2a2a;border-radius:8px;color:#c9a86a;font-size:.95rem;font-weight:700;cursor:pointer;text-align:center;transition:.15s}
+.tab.on{background:#b71c1c;border-color:#ff5252;color:#ffe9a8;box-shadow:0 0 16px rgba(255,82,82,.35)}
+.board{width:100%;max-width:560px;min-height:300px;background:#fff8e1;border:5px solid #b71c1c;border-radius:12px;padding:28px 24px;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 8px 40px rgba(183,28,28,.35);position:relative;overflow:hidden}
+.board::before{content:"⚠";position:absolute;top:8px;left:12px;font-size:1.4rem;opacity:.35}
+.board::after{content:"⚠";position:absolute;top:8px;right:12px;font-size:1.4rem;opacity:.35}
+#quote{font-size:1.45rem;font-weight:900;color:#b71c1c;line-height:1.7;text-align:center;animation:slam.3s ease-out}
+@keyframes slam{0%{transform:scale(1.6);opacity:0}100%{transform:scale(1);opacity:1}}
+#hint{font-size:.95rem;color:#8a7a5a;text-align:center;line-height:2}
+.btns{display:flex;gap:12px;margin-top:20px;width:100%;max-width:560px}
+button.big{flex:1;padding:16px;background:#b71c1c;color:#ffe9a8;border:none;border-radius:10px;font-size:1.25rem;font-weight:900;letter-spacing:.1em;cursor:pointer;box-shadow:0 4px 0 #7f0000;transition:.1s}
+button.big:active{transform:translateY(3px);box-shadow:none}
+button.ghost{flex:1;padding:16px;background:transparent;color:#c9a86a;border:2px solid #5a2a2a;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer}
+.count{margin-top:18px;color:#a08a6a;font-size:.85rem;letter-spacing:.05em}
+.count b{color:#ff5252;font-size:1.1rem}
+</style>
+</head>
+<body>
+<div class="warn">⚠ 警 告 ⚠</div>
+<h1>骂醒我</h1>
+<div class="sub">毒舌闹钟 · 专治各种不清醒</div>
+<div class="tabs">
+<div class="tab on" data-s="bed">🛏 起床困难</div>
+<div class="tab" data-s="fish">🐟 摸鱼上头</div>
+<div class="tab" data-s="buy">🛒 剁手冲动</div>
+</div>
+<div class="board">
+<div id="quote"><span id="hint">选个场景，点下面"骂我"<br>保证骂到你清醒</span></div>
+</div>
+<div class="btns">
+<button class="big" id="scold">骂 我</button>
+<button class="ghost" id="copy">复制</button>
+</div>
+<div class="count">今日已挨骂 <b id="n">0</b> 次 · <span id="total">累计 0 次</span></div>
+<script>
+const Q={
+bed:["起床吧，再不起你的梦想就要被别人的梦想吵醒了。","太阳都晒屁股了，你还在和床难舍难分？","你不是起不来，你是对床爱得太深。","闹钟响了三遍，你翻个身继续睡——梦想就是这样被睡没的。","早起的鸟儿有虫吃，你这只夜猫子只剩外卖了。","床是青春的坟墓，你已经埋进去一半了。","再赖床五分钟？五分钟后你还是会说再五分钟。","你不起床，床也不会养你。","清晨的阳光不等人，就像机会不等人。","别人已经跑完三公里了，你还在床上跑马拉松——梦里的。","起床气？那是你对现实的无能狂怒。","床以外的世界很精彩，床以内的你很困。","你的被窝很暖和，但你的钱包很冷。","赖床一时爽，全天火葬场。","醒醒，该搬砖了，梦里啥都有。"],
+fish:["摸鱼一时爽，KPI 火葬场。","你摸的不是鱼，是你的前途。","老板在你身后站了三分钟了，还刷呢？","摸鱼摸到忘记时间，工资也忘了涨。","工作不努力，老板追着你；摸鱼太用力，HR 约谈你。","你的鱼塘很大，但你的年终奖很小。","摸鱼的时候有多快乐，赶工的时候就有多狼狈。","别摸了，再摸鼠标都要被你盘包浆了。","你在工位上演'我在努力'，演技不错，工资不涨。","摸鱼不被发现叫本事，被发现了叫本事不大。","你以为你在摸鱼，其实鱼在摸你——摸你的头发，越摸越少。","把刷短视频的劲头用在工作上，你早升职了。","摸鱼一时爽，一直摸鱼一直……被优化。","工位上的你岁月静好，会议室里的你瑟瑟发抖。","摸鱼虽爽，可不要贪杯哦。"],
+buy:["买它之前先看看余额，余额说：你配吗？","你不是需要它，你是需要'买买买'的快感。","购物车里的快乐是暂时的，花呗的账单是永恒的。","冲动是魔鬼，剁手是魔鬼的镰刀。","这件衣服你衣柜里有三件类似的了。","别买了，你的快递盒已经可以搭个狗窝了。","省钱如抽丝，花钱如山倒。","你买的不是东西，是'我好穷'的证据。","大促的定金，是你智商的税。","冷静三天，还想买再说——三天后你连它叫啥都忘了。","你的钱包在哭，你的手在笑。","不买立省 100%。","你现在的样子，像极了月底吃土的你。","东西会过时，但账单不会。","把手剁了，就不用纠结买不买了。"]};
+let scene='bed',cur='',last=-1;
+const $=id=>document.getElementById(id);
+const today=new Date().toISOString().slice(0,10);
+let st=JSON.parse(localStorage.getItem('maxingwo')||'{}');
+if(st.day!==today)st={day:today,n:0,total:st.total||0};
+function render(){$('n').textContent=st.n;$('total').textContent='累计 '+st.total+' 次'}
+function pick(){
+const a=Q[scene];let i;
+do{i=Math.floor(Math.random()*a.length)}while(a.length>1&&i===last);
+last=i;cur=a[i];
+const q=$('quote');q.style.animation='none';q.offsetHeight;q.style.animation='';
+q.textContent=cur;
+st.n++;st.total++;localStorage.setItem('maxingwo',JSON.stringify(st));render();
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+t.classList.add('on');scene=t.dataset.s;last=-1;
+$('quote').innerHTML='<span id="hint">场景已切换<br>点"骂我"开骂</span>';cur='';
+});
+$('scold').onclick=pick;
+$('copy').onclick=()=>{if(!cur)return;navigator.clipboard.writeText(''+cur).then(()=>{const b=$('copy');b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1200)})};
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js');
+</script>
+</body>
+</html>
